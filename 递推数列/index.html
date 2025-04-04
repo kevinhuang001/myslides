@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<title>reveal.js</title>
+
+	<link rel="stylesheet" href="../dist/reset.css">
+	<link rel="stylesheet" href="../dist/reveal.css">
+	<link rel="stylesheet" href="../dist/theme/black.css">
+
+	<!-- Theme used for syntax highlighted code -->
+	<link rel="stylesheet" href="../plugin/highlight/monokai.css">
+</head>
+
+<body>
+	<div class="reveal">
+		<div class="slides">
+			<section class="r-fit-text">
+				<section>
+					<p>递推数列的一般求解算法的时间复杂度为O(n)</p>
+				</section>
+				<section>
+					<p>以斐波那契数列为例
+
+						\[
+						F_n = F_{n-1} + F_{n-2} \\
+						F_0=1 \\
+						F_1=1
+						\]
+					<p class="fragment">
+						\[
+						F_2=F_0+F_1=2
+						\]
+					</p>
+					<p class="fragment">
+						\[
+						F_3=F_1+F_2=3
+						\]
+					</p>
+					<p class="fragment">
+						\[
+						\dots \\
+						F_n=F_{n-1}+F_{n-2} = \dots
+						\]
+					</p>
+					</p>
+				</section>
+				<section>
+					<p>一个for循环（从2遍历到n），循环体内执行一次加法</p>
+					<o class="fragment">
+						时间复杂度
+						\(
+						\Theta(n)
+						\)
+					</o>
+				</section>
+			</section>
+			<section>
+				<section>
+					有没有
+					\(
+					O(logn)
+					\)
+					复杂度的算法呢
+				</section>
+				<section>
+					<p>同样以斐波那契数列为例</p>
+					<p>
+						\(
+						F_n = F_{n-1} + F_{n-2}
+						\)
+					</p>
+					<p class="fragment">
+						\(
+						F_{n-1} = F_{n-1}
+						\)
+					</p>
+					<p class="fragment">
+						\(
+						\begin{pmatrix} F_n \\ F_{n-1} \end{pmatrix} = \begin{pmatrix} 1 & 1 \\ 1 & 0 \end{pmatrix}
+						\begin{pmatrix} F_{n-1} \\ F_{n-2} \end{pmatrix}
+						\)
+					</p>
+					<p class="fragment">
+						\(
+						= \begin{pmatrix} 1 & 1 \\ 1 & 0 \end{pmatrix}^2 \begin{pmatrix} F_{n-2} \\ F_{n-3}
+						\end{pmatrix}
+						\)
+					</p>
+					<p class="fragment">
+						\(
+						= ... = \begin{pmatrix} 1 & 1 \\ 1 & 0 \end{pmatrix}^{n-1} \begin{pmatrix} F_1 \\ F_0
+						\end{pmatrix}
+						\)
+					</p>
+				</section>
+				<section>
+					<p>算法归结为求解
+						\(
+						\begin{pmatrix} 1 & 1 \\ 1 & 0 \end{pmatrix}^{n-1}
+						\)，即矩阵的幂 \( M^n\)
+					</p>
+				</section>
+				<section>
+					<p>
+						\(
+						M^n = \begin{cases} M^{\frac{n}{2}} \cdot M^{\frac{n}{2}} & n \text{ 为偶数} \\ M^{\frac{n-1}{2}}
+						\cdot M^{\frac{n-1}{2}} \cdot M & n \text{ 为奇数} \end{cases}
+
+						\)
+					</p>
+
+					<p class="fragment">
+						\(W(n) = W(\frac{n}{2}) + \Theta(1)
+						
+						\)
+					</p>
+
+					<p class="fragment">
+						\(W(n) = \Theta(\log n)\)
+					</p>
+				</section>
+			</section>
+			<section style="font-size: 40px;">
+				<p>
+					举一反三，相同方法求解Tribonacci数列
+					\[
+					\begin{aligned}
+					F_n &= F_{n-1} + F_{n-2} + F_{n-3} \\
+					F_{n-1} &=F_{n-1} \\
+					F_{n-2} &= F_{n-2}
+					\end{aligned}
+					\]
+				</p>
+				<p class="fragment">
+					\(
+					\begin{pmatrix} F_n \\ F_{n-1} \\ F_{n-2} \end{pmatrix} = \begin{pmatrix} 1 & 1 & 1 \\ 1 & 0 & 0 \\
+					0 & 1 & 0 \end{pmatrix} \begin{pmatrix} F_{n-1} \\ F_{n-2} \\ F_{n-3} \end{pmatrix}
+					= \begin{pmatrix} 1 & 1 & 1 \\ 1 & 0 & 0 \\ 0 & 1 & 0 \end{pmatrix}^{n-2} \begin{pmatrix} F_2 \\ F_1
+					\\ F_0 \end{pmatrix}
+					\)
+			</section>
+			<section>
+				<section>
+					<p>推广到一般递推数列
+						\(
+						\\
+						F_n = C_1F_{n-1} + C_2F_{n-2} + ... + C_kF_{n-k}
+						\)
+
+					</p>
+
+				</section>
+				<section>
+					<p>
+						\[
+						\left\{
+						\begin{aligned}
+						F_n &= C_1 F_{n+1} + C_2 F_{n+2} + \dots + C_k F_{n-k} \\
+						F_{n-1} &= F_{n-1} \\
+						F_{n-2} &= F_{n-2} \\
+						\vdots \\
+						F_{n-k+1} &= F_{n-k+1}
+						\end{aligned}
+						\right.
+						\]
+
+
+					</p>
+				</section>
+				<section>
+					<p>
+						\(
+						\begin{pmatrix} F_n \\ F_{n-1} \\ \vdots \\ F_{n-k+1} \end{pmatrix} = \begin{pmatrix} C_1 & C_2
+						& \cdots & C_{k-1} & C_k \\ 1 & 0 & \cdots & 0 & 0 \\ 0 & 1 & \cdots & 0 & 0 \\ \vdots & \vdots
+						& \ddots & \vdots & \vdots \\ 0 & 0 & \cdots & 1 & 0 \end{pmatrix} \begin{pmatrix} F_{n-1} \\
+						F_{n-2} \\ \vdots \\ F_{n-k} \end{pmatrix}
+						\)
+					</p>
+				</section>
+			</section>
+			<section>
+				<p>但这种形式并不是唯一的递推方法</p>
+				<p>
+					\(
+					\left\{
+					\begin{aligned}
+					F_n &= F_{n-1} + F_{n-2}
+					\\
+					F_{n-1} &= F_{n-2} + F_{n-3}
+					\\
+					F_{n-2} &= F_{n-2}
+					\end{aligned}
+					\right.
+					\\
+					\begin{pmatrix} F_n \\ F_{n-1} \\ F_{n-2} \end{pmatrix} = \begin{pmatrix} 1 & 1 & 0 \\ 0 & 1 & 1 \\
+					0 & 1 & 0 \end{pmatrix} \begin{pmatrix} F_{n-1} \\ F_{n-2} \\ F_{n-3} \end{pmatrix}
+					\)
+				</p>
+			</section>
+			<section>
+				<h1>谢谢大家</h1>
+				<p class="fragment">
+					觉得有帮助的话，期待大家的一键三连哦
+				</p>
+			</section>
+		</div>
+	</div>
+
+	<script src="../dist/reveal.js"></script>
+	<script src="../plugin/math/math.js"></script>
+	<script src="../plugin/notes/notes.js"></script>
+	<script src="../plugin/markdown/markdown.js"></script>
+	<script src="../plugin/highlight/highlight.js"></script>
+	<script>
+		// More info about initialization & config:
+		// - https://revealjs.com/initialization/
+		// - https://revealjs.com/config/
+		Reveal.initialize({
+			hash: true,
+
+			// Learn about ../plugins: https://revealjs.com/../plugins/
+			plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMath.KaTeX]
+		});
+	</script>
+</body>
+
+</html>
